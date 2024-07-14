@@ -9,15 +9,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.transaction.annotation.Transactional
 import com.fasterxml.jackson.databind.ObjectMapper
-import `in`.sangeet.shopping.constants.TestConstants
 import `in`.sangeet.shopping.constants.TestConstants.Companion.TEST_ID
 import `in`.sangeet.shopping.constants.TestConstants.Companion.TEST_QUANTITY
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCart
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCartItem
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestProduct
-import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUser
-import `in`.sangeet.shopping.constants.TestConstants.Companion.getUserRequest
-import `in`.sangeet.shopping.dto.UserRequest
+import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUserDTO
+import `in`.sangeet.shopping.constants.TestConstants.Companion.getUserRequestDTO
+import `in`.sangeet.shopping.dto.UserRequestDTO
 import `in`.sangeet.shopping.model.Cart
 import `in`.sangeet.shopping.model.CartItem
 import `in`.sangeet.shopping.model.Product
@@ -27,7 +26,6 @@ import `in`.sangeet.shopping.repository.ProductRepository
 import `in`.sangeet.shopping.repository.UserRepository
 import org.junit.jupiter.api.*
 import org.springframework.test.context.ActiveProfiles
-
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -53,7 +51,7 @@ class ShoppingCartControllerTest {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    private lateinit var userRequest: UserRequest
+    private lateinit var userRequestDTO: UserRequestDTO
     private lateinit var product: Product
     private lateinit var cart: Cart
     private lateinit var cartItem: CartItem
@@ -66,17 +64,17 @@ class ShoppingCartControllerTest {
     @BeforeAll
     fun setUp() {
         product = productRepository.save(getTestProduct(TEST_ID))
-        userRepository.save(getTestUser(TEST_ID))
+        userRepository.save(getTestUserDTO(TEST_ID))
         cart = cartRepository.save(getTestCart(TEST_ID))
         cartItem = cartItemRepository.save(getTestCartItem(TEST_ID))
-        userRequest = UserRequest(userId = userId, productId = productId, quantity = 1, cartId = cartId)
+        userRequestDTO = UserRequestDTO(userId = userId, productId = productId, quantity = 1, cartId = cartId)
     }
 
     @Test
     @Transactional
     fun `addItemToCart should add item to cart`() {
         val newProduct = productRepository.save(getTestProduct(2))
-        val newUserRequest = getUserRequest(newProduct.id!!)
+        val newUserRequest = getUserRequestDTO(newProduct.id!!)
 
         mockMvc.perform(post("/cart/items")
             .contentType(MediaType.APPLICATION_JSON)
@@ -136,11 +134,11 @@ class ShoppingCartControllerTest {
     @Test
     @Transactional
     fun `addItemToCart should return bad request if product not found`() {
-        val invalidUserRequest = UserRequest(userId = userId, productId = 999, quantity = 1, cartId = cartId)
+        val invalidUserRequestDTO = UserRequestDTO(userId = userId, productId = 999, quantity = 1, cartId = cartId)
 
         mockMvc.perform(post("/cart/items")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(invalidUserRequest)))
+            .content(objectMapper.writeValueAsString(invalidUserRequestDTO)))
             .andExpect(status().isNotFound)
     }
 

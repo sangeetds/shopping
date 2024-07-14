@@ -1,6 +1,6 @@
 package `in`.sangeet.shopping.dto
 
-data class UserRequest(
+data class UserRequestDTO(
     val userId: Long,
     val cartId: Long,
     val productId: Long,

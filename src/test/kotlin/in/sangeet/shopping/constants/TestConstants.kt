@@ -1,6 +1,6 @@
 package `in`.sangeet.shopping.constants
 
-import `in`.sangeet.shopping.dto.UserRequest
+import `in`.sangeet.shopping.dto.UserRequestDTO
 import `in`.sangeet.shopping.model.Cart
 import `in`.sangeet.shopping.model.CartItem
 import `in`.sangeet.shopping.model.Product
@@ -18,7 +18,7 @@ class TestConstants {
         const val TEST_PASSWORD     = "veryeasypassword"
         const val TEST_PRICE        = 100.0
 
-        fun getTestCart(id: Long) = Cart(id, getTestUser(TEST_ID))
+        fun getTestCart(id: Long) = Cart(id, getTestUserDTO(TEST_ID))
 
         fun getTestCartItem(id: Long) = CartItem(
             id = id,
@@ -34,14 +34,14 @@ class TestConstants {
             TEST_PRICE
         )
 
-        fun getTestUser(id: Long) = User(
+        fun getTestUserDTO(id: Long?) = User(
             id,
             TEST_NAME,
             TEST_EMAIL,
             TEST_PASSWORD
         )
 
-        fun getUserRequest(productId: Long) = UserRequest(
+        fun getUserRequestDTO(productId: Long) = UserRequestDTO(
             TEST_ID,
             TEST_ID,
             productId,
