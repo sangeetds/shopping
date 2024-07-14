@@ -1,7 +1,7 @@
 package `in`.sangeet.shopping.service
 
 import `in`.sangeet.shopping.constants.TestConstants.Companion.TEST_ID
-import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUserDTO
+import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUser
 import `in`.sangeet.shopping.exceptions.UserNotFoundException
 import `in`.sangeet.shopping.repository.UserRepository
 import `in`.sangeet.shopping.service.impl.UserServiceImpl
@@ -26,7 +26,7 @@ class UserServiceImplTest {
 
     @Test
     fun `getUserById returns user when found`() {
-        val user = getTestUserDTO(TEST_ID)
+        val user = getTestUser(TEST_ID)
         whenever(userRepository.findById(TEST_ID)).thenReturn(Optional.of(user))
 
         val result = userService.getUserById(TEST_ID)

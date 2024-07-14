@@ -7,7 +7,6 @@ import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCart
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCartItem
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestProduct
 import `in`.sangeet.shopping.exceptions.CartItemNotFoundException
-import `in`.sangeet.shopping.exceptions.CartNotFoundException
 import `in`.sangeet.shopping.exceptions.NoActiveCartFoundForTheUserException
 import `in`.sangeet.shopping.repository.CartRepository
 import `in`.sangeet.shopping.service.impl.ShoppingServiceImpl
@@ -40,7 +39,7 @@ class ShoppingServiceImplTest {
     fun `addItemToCart adds a new item to the cart`() {
         whenever(cartRepository.findByIdAndUserIdAndCheckedOutFalse(TEST_ID, TEST_ID)).thenReturn(getTestCart(TEST_ID) )
         whenever(productService.getProductById(TEST_ID)).thenReturn(getTestProduct(TEST_ID) )
-        whenever(cartItemService.findItemInCart(TEST_ID, TEST_ID)).doAnswer { throw CartItemNotFoundException() }
+        whenever(cartItemService.findItemInCart(TEST_ID, TEST_ID)).doAnswer { throw CartItemNotFoundException("Message") }
 
         shoppingService.addItemToCart(TEST_ID, TEST_ID, TEST_QUANTITY, TEST_ID)
 
@@ -134,7 +133,7 @@ class ShoppingServiceImplTest {
 
     @Test
     fun `updateItemQuantity throws CartItemNotFoundException when item not found`() {
-        whenever(cartItemService.findItemInCart(TEST_ID, TEST_ID)).doAnswer { throw CartItemNotFoundException() }
+        whenever(cartItemService.findItemInCart(TEST_ID, TEST_ID)).doAnswer { throw CartItemNotFoundException("Message") }
         whenever(cartRepository.findByIdAndUserIdAndCheckedOutFalse(TEST_ID, TEST_ID)).thenReturn(getTestCart(TEST_ID) )
 
         assertThrows(CartItemNotFoundException::class.java) {
@@ -146,7 +145,7 @@ class ShoppingServiceImplTest {
     fun `getCartItems throws CartNotFoundException when no active cart is found`() {
         whenever(cartRepository.findByIdAndUserIdAndCheckedOutFalse(TEST_ID, TEST_ID)).thenReturn(null )
 
-        assertThrows(CartNotFoundException::class.java) {
+        assertThrows(NoActiveCartFoundForTheUserException::class.java) {
             shoppingService.getCartItems(TEST_ID, TEST_ID)
         }
     }

@@ -25,7 +25,7 @@ class CartItemServiceImplTest {
     
     @Test
     fun `findItemInCart returns cart item if found`() {
-        whenever(cartItemRepository.findByCartIdAndProductId(TEST_ID, TEST_ID)).thenReturn(getTestCartItem(TEST_ID))
+        whenever(cartItemRepository.findByIdAndCartId(TEST_ID, TEST_ID)).thenReturn(getTestCartItem(TEST_ID))
 
         val result = cartItemService.findItemInCart(TEST_ID, TEST_ID)
 
@@ -63,7 +63,7 @@ class CartItemServiceImplTest {
 
     @Test
     fun `findItemInCart throws CartItemNotFoundException if item not found`() {
-        whenever(cartItemRepository.findByCartIdAndProductId(TEST_ID, TEST_ID)).thenReturn(null)
+        whenever(cartItemRepository.findByIdAndCartId(TEST_ID, TEST_ID)).thenReturn(null)
 
         assertThrows(CartItemNotFoundException::class.java) {
             cartItemService.findItemInCart(TEST_ID, TEST_ID)

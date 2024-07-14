@@ -1,3 +1,3 @@
 package `in`.sangeet.shopping.exceptions
 
-class NoActiveCartFoundForTheUserException : BaseDataNotFoundException()
+class NoActiveCartFoundForTheUserException(message: String) : BaseDataNotFoundException(message)

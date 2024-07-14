@@ -1,3 +1,3 @@
 package `in`.sangeet.shopping.exceptions
 
-class CartItemNotFoundException : BaseDataNotFoundException()
+class CartItemNotFoundException(message: String) : BaseDataNotFoundException(message)

@@ -45,7 +45,7 @@ class GlobalExceptionHandler {
             errorCode = "ERR002",
             errorMessage = ex.message ?: "Item not found in the server."
         )
-        logger.error(ex) { "Item not found in the server: " }
+        logger.error(ex) { "Item not found in the server: ${ex.message}" }
         return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
     }
 
@@ -57,13 +57,13 @@ class GlobalExceptionHandler {
      * @param request The web request during which the exception was thrown.
      * @return A ResponseEntity containing the error code and message.
      */
-    @ExceptionHandler(value = [UserAlreadyExistsException::class, UserDetailsNotCorrectException::class])
+    @ExceptionHandler(value = [UserAlreadyExistsException::class, UserDetailsNotCorrectException::class, ProductDetailsNotCorrectException::class, ProductAlreadyExistsException::class])
     fun handleException(ex: Exception, request: WebRequest): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(
             errorCode = "ERR003",
             errorMessage = ex.message ?: "User already exists with the given email or username"
         )
-        logger.error(ex) { "User already exists " }
+        logger.error(ex) { "Data already exists " }
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
     }
 

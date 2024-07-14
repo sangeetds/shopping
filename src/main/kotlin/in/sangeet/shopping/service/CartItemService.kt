@@ -8,12 +8,12 @@ interface CartItemService {
     /**
      * Finds a cart item by product ID and cart ID.
      *
-     * @param cartItemId The ID of the product.
+     * @param id The ID of the product.
      * @param cartId The ID of the cart.
      * @return The cart item if found.
      * @throws CartItemNotFoundException if the cart item is not found.
      */
-    fun findItemInCart(cartItemId: Long, cartId: Long): CartItem
+    fun findItemInCart(id: Long, cartId: Long): CartItem
 
     /**
      * Saves a cart item.

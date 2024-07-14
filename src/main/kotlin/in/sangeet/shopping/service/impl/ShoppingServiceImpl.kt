@@ -1,7 +1,6 @@
 package `in`.sangeet.shopping.service.impl
 
 import `in`.sangeet.shopping.exceptions.CartItemNotFoundException
-import `in`.sangeet.shopping.exceptions.CartNotFoundException
 import `in`.sangeet.shopping.exceptions.NoActiveCartFoundForTheUserException
 import `in`.sangeet.shopping.model.Cart
 import `in`.sangeet.shopping.model.CartItem
@@ -70,7 +69,7 @@ class ShoppingServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getCartItems(cartId: Long, userId: Long): List<CartItem> {
-        val cart = cartRepository.findByIdAndUserIdAndCheckedOutFalse(cartId, userId) ?: throw CartNotFoundException()
+        val cart = getActiveCartForUser(cartId, userId)
 
         return cartItemService.findItemsInCart(cart.id!!)
     }
@@ -99,7 +98,7 @@ class ShoppingServiceImpl(
     private fun getActiveCartForUser(cartId: Long, userId: Long): Cart {
         val cartForUser = cartRepository.findByIdAndUserIdAndCheckedOutFalse(cartId, userId)
 
-        cartForUser ?: throw NoActiveCartFoundForTheUserException()
+        cartForUser ?: throw NoActiveCartFoundForTheUserException("Cart has been checked out")
 
         return cartForUser
     }

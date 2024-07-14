@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service
 class CartItemServiceImpl(private val cartItemRepository: CartItemRepository): CartItemService {
 
 
-    override fun findItemInCart(cartItemId: Long, cartId: Long): CartItem =
-        cartItemRepository.findByCartIdAndProductId(cartId, cartItemId) ?: throw CartItemNotFoundException()
+    override fun findItemInCart(id: Long, cartId: Long): CartItem =
+        cartItemRepository.findByIdAndCartId(id, cartId) ?: throw CartItemNotFoundException("Item not found in the cart")
 
     override fun save(cartItem: CartItem) = cartItemRepository.save(cartItem)
 

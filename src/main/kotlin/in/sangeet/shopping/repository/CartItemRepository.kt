@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CartItemRepository : JpaRepository<CartItem, Long> {
 
-    fun findByCartIdAndProductId(cartId: Long, productId: Long): CartItem?
+    fun findByIdAndCartId(cartId: Long, productId: Long): CartItem?
 
     fun deleteByIdAndCartId(id: Long, cartId: Long)
 

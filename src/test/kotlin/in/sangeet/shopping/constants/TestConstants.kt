@@ -18,23 +18,23 @@ class TestConstants {
         const val TEST_PASSWORD     = "veryeasypassword"
         const val TEST_PRICE        = 100.0
 
-        fun getTestCart(id: Long) = Cart(id, getTestUserDTO(TEST_ID))
+        fun getTestCart(id: Long? = null) = Cart(id, getTestUser(TEST_ID))
 
-        fun getTestCartItem(id: Long) = CartItem(
+        fun getTestCartItem(id: Long? = null, product: Product = getTestProduct(TEST_ID)) = CartItem(
             id = id,
             cart = getTestCart(TEST_ID),
-            product = getTestProduct(TEST_ID),
+            product = product,
             quantity = TEST_QUANTITY
         )
 
-        fun getTestProduct(id: Long) = Product(
+        fun getTestProduct(id: Long? = null) = Product(
             id,
             TEST_NAME,
             TEST_DESCRIPTION,
             TEST_PRICE
         )
 
-        fun getTestUserDTO(id: Long?) = User(
+        fun getTestUser(id: Long? = null) = User(
             id,
             TEST_NAME,
             TEST_EMAIL,

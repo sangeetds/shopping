@@ -1,3 +1,3 @@
 package `in`.sangeet.shopping.exceptions
 
-class UserNotFoundException : BaseDataNotFoundException()
+class UserNotFoundException(message: String) : BaseDataNotFoundException(message)

@@ -14,12 +14,13 @@ import `in`.sangeet.shopping.constants.TestConstants.Companion.TEST_QUANTITY
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCart
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestCartItem
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestProduct
-import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUserDTO
+import `in`.sangeet.shopping.constants.TestConstants.Companion.getTestUser
 import `in`.sangeet.shopping.constants.TestConstants.Companion.getUserRequestDTO
 import `in`.sangeet.shopping.dto.UserRequestDTO
 import `in`.sangeet.shopping.model.Cart
 import `in`.sangeet.shopping.model.CartItem
 import `in`.sangeet.shopping.model.Product
+import `in`.sangeet.shopping.model.User
 import `in`.sangeet.shopping.repository.CartItemRepository
 import `in`.sangeet.shopping.repository.CartRepository
 import `in`.sangeet.shopping.repository.ProductRepository
@@ -55,6 +56,7 @@ class ShoppingCartControllerTest {
     private lateinit var product: Product
     private lateinit var cart: Cart
     private lateinit var cartItem: CartItem
+    private lateinit var user: User
 
     private val cartId = TEST_ID
     private val userId = TEST_ID
@@ -63,10 +65,10 @@ class ShoppingCartControllerTest {
 
     @BeforeAll
     fun setUp() {
-        product = productRepository.save(getTestProduct(TEST_ID))
-        userRepository.save(getTestUserDTO(TEST_ID))
-        cart = cartRepository.save(getTestCart(TEST_ID))
-        cartItem = cartItemRepository.save(getTestCartItem(TEST_ID))
+        product = productRepository.save(getTestProduct())
+        user = userRepository.save(getTestUser())
+        cart = cartRepository.save(getTestCart())
+        cartItem = cartItemRepository.save(getTestCartItem(product = product))
         userRequestDTO = UserRequestDTO(userId = userId, productId = productId, quantity = 1, cartId = cartId)
     }
 
@@ -87,8 +89,8 @@ class ShoppingCartControllerTest {
     @Test
     @Transactional
     fun `updateItemQuantity should update item quantity`() {
-        mockMvc.perform(put("/cart/{cartId}/items/{itemId}", cartId, cartItemId)
-            .param("userId", "1")
+        mockMvc.perform(put("/cart/{cartId}/items/{itemId}", cart.id, cartItem.id)
+            .param("userId", userId.toString())
             .param("quantity", "2"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.quantity").value(2))
