@@ -29,7 +29,7 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
     private fun validateUserData(userDTO: UserDTO): User {
         val (username, email, password) = userDTO
         if (username.isBlank() || email.isBlank() || password.isBlank() || email.isInvalidEmail()) {
-            throw UserDetailsNotCorrectException()
+            throw UserDetailsNotCorrectException("User details are not correct") // More details validations
         }
         val newUser = userRepository.findByEmailOrUsername(email, username)
 

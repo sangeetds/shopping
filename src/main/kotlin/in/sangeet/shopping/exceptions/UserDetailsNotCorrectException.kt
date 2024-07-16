@@ -1,5 +1,3 @@
 package `in`.sangeet.shopping.exceptions
 
-class UserDetailsNotCorrectException : Exception() {
-
-}
+class UserDetailsNotCorrectException(message: String) : Exception(message)
